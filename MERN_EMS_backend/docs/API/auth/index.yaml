@@ -1,0 +1,122 @@
+openapi: "3.0.2"
+info:
+  title: Authentication API
+  version: "1.0"
+
+paths:
+  /auth/login:
+    post:
+      summary: Log in an existing user
+      description: Log in the user using their admin credentials
+      tags:
+        - Auth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        "200":
+          description: Found user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Auth'
+        "404":
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageOnly'
+  
+  /auth/register:
+    post:
+      summary: Create new user 
+      description: Register new user for the app
+      tags:
+        - Auth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              required:
+                - email
+                - password
+                - username
+                - name
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+                username:
+                  type: string
+                name:
+                  type: string
+                
+      responses:
+        "200":
+          description: User created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Auth'
+
+        "500":
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageOnly'
+  
+  /auth/logout:
+    get:
+      summary: Log out an existing user
+      description: Log out an user
+      tags:
+        - Auth
+      responses:
+        "200":
+          description: Found user
+        "404":
+          description: User not found
+
+components:
+
+  schemas:
+    Auth:
+      type: object
+      properties:
+        message: 
+          type: string
+        data:
+          type: object
+          properties:
+            token:
+              type: string
+            user:
+              type: object
+              properties:
+                _id:
+                  type: string
+                name:
+                  type: string
+                email:
+                  type: string
+                username:
+                  type: string
+    
+    MessageOnly:
+      type: object
+      properties:
+        message:
+          type: string

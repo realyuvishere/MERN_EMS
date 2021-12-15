@@ -1,0 +1,11 @@
+{
+  "expo": {
+    "name": "MERN_EMS_app",
+    "slug": "MERN_EMS_app",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  },
+  "name": "MERN_EMS_app"
+}

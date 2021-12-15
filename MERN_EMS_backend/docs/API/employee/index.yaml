@@ -1,0 +1,169 @@
+openapi: "3.0.2"
+info:
+  title: Employees API
+  version: "1.0"
+
+paths:
+
+  /employees/new:
+    post:
+      summary: Create a new employee
+      description: Creates a new employee with the given data
+      tags:
+        - Employees
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              required:
+                - email
+                - firstname
+                - lastname
+                - contact
+                - department
+              properties:
+                email:
+                  type: string
+                firstname:
+                  type: string
+                lastname:
+                  type: string
+                contact:
+                  type: number
+                department:
+                  type: string
+      responses:
+        "200":
+          description: User created
+        "500":
+          description: Error occurred
+  
+  /employees/single/{uid}:
+    get:
+      summary: Get data of one employee
+      description: Gets all the data of a given employee's unique ID (uid)
+      tags:
+        - Employees
+      parameters:
+        - in: path
+          name: uid
+          required: true
+          schema:
+            type: ObjectId
+      responses:
+        "200":
+          description: Found user
+        "404":
+          description: User not foud
+  
+  /employees/all:
+    get:
+      summary: List all employees
+      description: Log out an user
+      tags:
+        - Employees
+      responses:
+        "200":
+          description: Fetched users
+          content:
+            application/json:
+              schema:
+                type: array
+                properties:
+                  0:
+                    $ref: '#/components/schemas/Employee'
+        "500":
+          description: Server error
+  
+  /employees/edit:
+    patch:
+      summary: Edit data of an employee
+      description: Edit data of an employee
+      tags:
+        - Employees
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              required:
+                - email
+                - firstname
+                - lastname
+                - contact
+                - department
+                - _id
+              properties:
+                email:
+                  type: string
+                firstname:
+                  type: string
+                lastname:
+                  type: string
+                contact:
+                  type: number
+                department:
+                  type: string
+                _id:
+                  type: string
+      responses:
+        "200":
+          description: Edited user
+        "404":
+          description: User not found
+        "500":
+          description: Server error
+  
+  /employees/delete/{uid}:
+    delete:
+      summary: Delete an employee
+      description: Delete all data of an employee with a given unique ID (uid)
+      tags:
+        - Employees
+      parameters:
+        - in: path
+          name: uid
+          required: true
+          schema:
+            type: ObjectId
+      responses:
+        "200":
+          description: Deleted user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageOnly'
+
+        "404":
+          description: User not found
+        "500":
+          description: Server error
+
+
+components:
+
+  schemas:
+    Employee:
+      type: object
+      properties:
+        _id:
+          type: string
+        firstname:
+          type: string
+        lastname:
+          type: string
+        email:
+          type: string
+        department:
+          type: string
+        contact:
+          type: number
+        employeeID:
+          type: number
+    
+    MessageOnly:
+      type: object
+      properties:
+        message:
+          type: string
